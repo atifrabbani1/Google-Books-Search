@@ -33,8 +33,9 @@ class Search extends Component {
 
     save = id => {
 
-        const book = this.state.books.find(book => book._id === id);
+        const book = this.state.books.find(book => book.id === id);
         console.log(book.volumeInfo.title)
+        alert(book.volumeInfo.title + " by " + book.volumeInfo.authors + " saved in Database")
 
         API.saveBook({
             title: book.volumeInfo.title,
@@ -90,15 +91,15 @@ class Search extends Component {
                                             return (
                                                 <Wrapper>
                                                     <BookListItem
-                                                        key={book._id}
+                                                        key={book.id}
                                                         title={book.volumeInfo.title}
                                                         href={book.volumeInfo.canonicalVolumeLink}
-                                                        author={book.volumeInfo.authors}
+                                                        author={book.volumeInfo.authors.join(", ")}
                                                         description={book.volumeInfo.description}
                                                         thumbnail={book.volumeInfo.imageLinks.thumbnail}
                                                         Button={() => (
                                                             <button
-                                                                onClick={() => this.save(book._id)}
+                                                                onClick={() => this.save(book.id)}
                                                                 className="btn save-button  heading-subtitle ml-2"
                                                             >
                                                                 Save

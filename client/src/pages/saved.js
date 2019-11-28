@@ -3,7 +3,7 @@ import Wrapper from "../components/Wrapper/index";
 import Navbar from "../components/Navbar/index";
 import API from "../utils/API";
 import { BookList, BookListItem } from "../components/BookList/booklist";
-import { Row, Col } from "../components/Grid/";
+import { Container, Row, Col } from "../components/Grid/";
 
 class Saved extends Component {
     state = {
@@ -38,6 +38,7 @@ class Saved extends Component {
             <Wrapper>
                 <Navbar />
                 <h1 className="text-center">Saved Books</h1>
+                <Container>
                 <Row>
                     <Col size="xs-12">
                         {!this.state.books.length ? (
@@ -52,7 +53,7 @@ class Saved extends Component {
                                                     key={book._id}
                                                     title={book.title}
                                                     href={book.href}
-                                                    author={book.author}
+                                                    author={book.author.join(", ")}
                                                     description={book.description}
                                                     thumbnail={book.thumbnail}
                                                     Button={() => (
@@ -71,6 +72,7 @@ class Saved extends Component {
                             )}
                     </Col>
                 </Row>
+                </Container>
             </Wrapper>
         );
     }
