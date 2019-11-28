@@ -10,7 +10,7 @@ import { Container, Row, Col } from "../components/Grid/";
 class Search extends Component {
     state = {
         books: [],
-        title: ""
+        title: "",
     };
 
     handleInputChange = event => {
@@ -30,6 +30,22 @@ class Search extends Component {
             .then(console.log(this.state.books))
             .catch(err => console.log(err));
     };
+
+    save = id => {
+
+        const book = this.state.books.find(book => book._id === id);
+        console.log(book.volumeInfo.title)
+
+        API.saveBook({
+            title: book.volumeInfo.title,
+            href: book.volumeInfo.canonicalVolumeLink,
+            author: book.volumeInfo.authors,
+            description: book.volumeInfo.description,
+            thumbnail: book.volumeInfo.imageLinks.thumbnail
+        })
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+    }
     render() {
         return (
             <Wrapper>
@@ -70,16 +86,26 @@ class Search extends Component {
                             ) : (
                                     <BookList>
                                         {this.state.books.map(book => {
-                                           
+
                                             return (
-                                                <BookListItem
-                                                    key={book._id}
-                                                    title={book.volumeInfo.title}
-                                                    href={book.volumeInfo.canonicalVolumeLink}
-                                                    author={book.volumeInfo.authors}
-                                                    description={book.volumeInfo.description}
-                                                    thumbnail={book.volumeInfo.imageLinks.thumbnail}
-                                                />
+                                                <Wrapper>
+                                                    <BookListItem
+                                                        key={book._id}
+                                                        title={book.volumeInfo.title}
+                                                        href={book.volumeInfo.canonicalVolumeLink}
+                                                        author={book.volumeInfo.authors}
+                                                        description={book.volumeInfo.description}
+                                                        thumbnail={book.volumeInfo.imageLinks.thumbnail}
+                                                        Button={() => (
+                                                            <button
+                                                                onClick={() => this.save(book._id)}
+                                                                className="btn save-button  heading-subtitle ml-2"
+                                                            >
+                                                                Save
+                                                            </button>
+                                                        )}
+                                                    />
+                                                </Wrapper>
                                             );
                                         })}
                                     </BookList>

@@ -12,20 +12,24 @@ export function BookListItem({
     title,
     author,
     href,
-    description
+    description,
+    Button
 }) {
+    
     return (
         <li className="list-group-item">
             <Container>
                 <Row>
                     <Col size="xs-4 sm-2">
-                        <Thumbnail src={thumbnail} />
+                        <Thumbnail src={thumbnail} /><br />
+                        {/* <button onClick={save}>Save this book</button> */}
                     </Col>
                     <Col size="xs-8 sm-9">
                         <h3>{title}</h3>
                         <p>Author: {author}</p>
                         <p>Description: {description}</p>
                         <a href={href} rel="noreferrer noopener" target="_blank" >Go to Book!</a>
+                        <Button />
                     </Col>
                 </Row>
             </Container>
