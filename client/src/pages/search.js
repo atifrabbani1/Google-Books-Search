@@ -35,17 +35,38 @@ class Search extends Component {
 
         const book = this.state.books.find(book => book.id === id);
         console.log(book.volumeInfo.title)
-        alert(book.volumeInfo.title + " by " + book.volumeInfo.authors + " saved in Database")
+        
 
-        API.saveBook({
-            title: book.volumeInfo.title,
-            href: book.volumeInfo.canonicalVolumeLink,
-            author: book.volumeInfo.authors,
-            description: book.volumeInfo.description,
-            thumbnail: book.volumeInfo.imageLinks.thumbnail
+        API.getBook(book.id)
+        .then(results => {
+            console.log(results.data.length)
+            var exist = 0;
+            for(let i=0; i<results.data.length; i++){
+                if(results.data[i].googleID === book.id){
+                    exist++;
+                    console.log(exist)
+                    alert("Book already saved"); 
+                }
+            }
+            if(exist === 0){
+                alert(book.volumeInfo.title + " by " + book.volumeInfo.authors + " saved in Database")
+                API.saveBook({
+                    googleID: book.id,
+                    title: book.volumeInfo.title,
+                    href: book.volumeInfo.canonicalVolumeLink,
+                    author: book.volumeInfo.authors,
+                    description: book.volumeInfo.description,
+                    thumbnail: book.volumeInfo.imageLinks.thumbnail
+                })
+                    .then(res => {console.log(res); exist = 0})
+                    .catch(err => console.log(err));
+            }
         })
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+        .catch(err => console.log(err));
+
+        
+        
+        
     }
     render() {
         return (
@@ -94,7 +115,7 @@ class Search extends Component {
                                                         key={book.id}
                                                         title={book.volumeInfo.title}
                                                         href={book.volumeInfo.canonicalVolumeLink}
-                                                        author={book.volumeInfo.authors.join(", ")}
+                                                        author={book.volumeInfo.authors}
                                                         description={book.volumeInfo.description}
                                                         thumbnail={book.volumeInfo.imageLinks.thumbnail}
                                                         Button={() => (
